@@ -2469,6 +2469,8 @@ class ExportCIF(G2fil.ExportBaseclass):
                 spacegroup = phasedict['General']['SGData']['SpGrp'].strip()
                 # regularize capitalization and remove trailing H/R
                 spacegroup = spacegroup[0].upper() + spacegroup[1:].lower().rstrip('rh ')
+                if phasedict['General']['SGData']['SGLaue'] in ['3R','3mR']:
+                    spacegroup += ' :R'    # CIF spelling of rhombohedral axes
                 #WriteCIFitem(self.fp, '_symmetry_space_group_name_H-M',spacegroup)
                 WriteCIFitem(self.fp, '_space_group_name_H-M_alt',spacegroup)
                 HallSym = G2spc.GetHallSpaceGroup(phasedict['General']['SGData'])
@@ -2608,6 +2610,8 @@ class ExportCIF(G2fil.ExportBaseclass):
                 spacegroup = phasedict['General']['SGData']['SpGrp'].strip()
                 # regularize capitalization and remove trailing H/R
                 spacegroup = spacegroup[0].upper() + spacegroup[1:].lower().rstrip('rh ')
+                if phasedict['General']['SGData']['SGLaue'] in ['3R','3mR']:
+                    spacegroup += ' :R'    # CIF spelling of rhombohedral axes
                 #WriteCIFitem(self.fp, '_symmetry_space_group_name_H-M',spacegroup)
                 WriteCIFitem(self.fp, '_space_group_name_H-M_alt',spacegroup)
                 HallSym = G2spc.GetHallSpaceGroup(phasedict['General']['SGData'])

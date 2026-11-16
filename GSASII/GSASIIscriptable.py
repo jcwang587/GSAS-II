@@ -4934,6 +4934,8 @@ class G2Phase(G2ObjectWrapper):
             spacegroup = self.data['General']['SGData']['SpGrp'].strip()
             # regularize capitalization and remove trailing H/R
             spacegroup = spacegroup[0].upper() + spacegroup[1:].lower().rstrip('rh ')
+            if self.data['General']['SGData']['SGLaue'] in ['3R','3mR']:
+                spacegroup += ' :R'    # CIF spelling of rhombohedral axes
             cif.WriteCIFitem(fp, '_symmetry_space_group_name_H-M', spacegroup)
 
             # generate symmetry operations including centering and center of symmetry
