@@ -17,7 +17,7 @@ if importlib.util.find_spec('GSASII') is None: # hack path if GSASII not install
     home = os.path.dirname(__file__)
     sys.path.append(os.path.dirname(home))
 
-from GSASII.GSASIIspc import MoveToUnitCell, SpcGroup, SytSym
+from GSASII.GSASIIspc import GenAtom, MoveToUnitCell, SpcGroup, SytSym
 
 # self-test materials follow. Requires files in directory testinp
 selftestlist = []
@@ -196,7 +196,21 @@ def test_SytSym():
             ((0.11,0.11,0.11),16,'3(111)'),
             ((0,0,0),8,'-3(111)'),
             ])
+    # Sites with a coordinate of 0, which an operation can return as 1 or just below 1
+    ExerciseSiteSym('R -3 c',[
+            ((0.3333,0.0,0.0833),18,'2(110)'),
+            ((0.0,9e-18,0.848),12,'3'),
+            ])
 selftestlist.append(test_SytSym)
+
+def test_GenAtom():
+    '''self-test #4: exercise GenAtom on a site with a coordinate of 0'''
+    _ReportTest()
+    (E,S) = SpcGroup('R -3 c')
+    assert not E, 'failed on space group R -3 c'
+    XYZ = list(GenAtom((0.3333,0.0,0.0833),S))
+    assert len(XYZ) == 18, f'GenAtom lists {len(XYZ)} positions in R -3 c, expected 18'
+selftestlist.append(test_GenAtom)
 
 if __name__ == '__main__':
     # run self-tests
